@@ -96,7 +96,7 @@ CREATE TABLE public.banksoals (
     kode_banksoal character varying(100) NOT NULL,
     key_lock character varying(255),
     lock_by character varying(255),
-    persen character varying(255) NOT NULL,
+    persen character varying(350) NOT NULL,
     matpel_id uuid NOT NULL,
     author uuid NOT NULL,
     created_at timestamp(0) without time zone,
@@ -117,7 +117,10 @@ CREATE TABLE public.banksoals (
     code13_max integer DEFAULT 0 NOT NULL,
     code14_max integer DEFAULT 0 NOT NULL,
     is_locked boolean DEFAULT false NOT NULL,
-    supports text
+    supports text,
+    last_sequence integer DEFAULT 0 NOT NULL,
+    sequence_type integer DEFAULT 0 NOT NULL,
+    code15_max integer DEFAULT 0 NOT NULL
 );
 
 
@@ -134,7 +137,8 @@ CREATE TABLE public.check_answers (
     point numeric(19,2) NOT NULL,
     created_at timestamp(0) without time zone,
     updated_at timestamp(0) without time zone,
-    jadwal_id uuid NOT NULL
+    jadwal_id uuid NOT NULL,
+    ai_opinion text
 );
 
 
@@ -365,7 +369,11 @@ CREATE TABLE public.hasil_ujians (
     code14_point numeric(19,2) DEFAULT 0 NOT NULL,
     code14_void integer DEFAULT 0 NOT NULL,
     check_point_max numeric(19,2) DEFAULT 0 NOT NULL,
-    duration character varying(50) DEFAULT '-'::character varying NOT NULL
+    duration character varying(50) DEFAULT '-'::character varying NOT NULL,
+    code15_correct integer DEFAULT 0 NOT NULL,
+    code15_wrong integer DEFAULT 0 NOT NULL,
+    code15_point numeric(19,2) DEFAULT 0 NOT NULL,
+    code15_void integer DEFAULT 0 NOT NULL
 );
 
 
@@ -426,7 +434,8 @@ CREATE TABLE public.jawaban_pesertas (
     point numeric(19,2) DEFAULT 0 NOT NULL,
     ragu_ragu boolean DEFAULT false NOT NULL,
     iscorrect boolean DEFAULT false NOT NULL,
-    part integer DEFAULT 1 NOT NULL
+    part integer DEFAULT 1 NOT NULL,
+    ai_opinion text
 );
 
 
@@ -672,7 +681,8 @@ CREATE TABLE public.soals (
     competence_item_id uuid,
     absolute_eval boolean DEFAULT true NOT NULL,
     case_sensitive boolean DEFAULT true NOT NULL,
-    supports text
+    supports text,
+    sequence bigint DEFAULT 0 NOT NULL
 );
 
 
@@ -1702,3 +1712,4 @@ CREATE INDEX users_email_role_index ON public.users USING btree (email, role);
 --
 -- PostgreSQL database dump complete
 --
+
